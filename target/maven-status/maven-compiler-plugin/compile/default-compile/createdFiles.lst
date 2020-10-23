@@ -1,6 +1,12 @@
-books\ejb\CategoryService.class
 books\entities\Category_.class
+books\Utilities.class
 books\resources\JavaEE8Resource.class
 books\JAXRSConfiguration.class
+books\Topic.class
 books\CategoryEditor.class
 books\entities\Category.class
+books\ejb\CategoryService.class
+books\Topics.class
+books\Topic$TopicBuilder.class
+books\Topic$1.class
+books\Utilities$HandleDefault.class
