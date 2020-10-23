@@ -10,9 +10,9 @@ import books.entities.Category;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -31,6 +31,8 @@ public class CategoryEditor implements Serializable {
     private static final Logger _logger = Logger.getLogger("CategoryEditor");
     private List<Category> _categories;
     private List<Category> _deletedCategories;
+    private static final String CATEGORY = "category";
+    private Topics _topics;
 
     @Inject
     CategoryService _categoryService;
@@ -39,6 +41,7 @@ public class CategoryEditor implements Serializable {
     private void init() {
         _categories = _categoryService.findAll();
         _deletedCategories = new ArrayList<>();
+        this.initTopics();
     }
 
     public List<Category> getCategories() {
@@ -81,5 +84,43 @@ public class CategoryEditor implements Serializable {
         }
         _deletedCategories = new ArrayList<>();
         return "";
+    }
+
+    private void initTopics() {
+        _topics = new Topics();
+        Topic topic = Topic.TopicBuilder
+                .createBuilder(CATEGORY)
+                .setTitle("Category")
+                .setOutcome("categoryEditor.xhtml")
+                .build();
+        _topics.addTopic(topic);
+        for (String lang : Utilities.getSupportedLocales(Utilities.HandleDefault.Exclude)) {
+            topic = Topic.TopicBuilder
+                    .createBuilder(lang)
+                    .setOutcome("categoryTranslator.xhtml")
+                    .build();
+            _topics.addTopic(topic);
+        }
+        _topics.setActive(CATEGORY);
+    }
+
+    public String changeTab(String newTopicKey) {
+        if (_topics.getActiveTopic().get().getKey().equals(newTopicKey)) {
+            return "";
+        }
+        _topics.setActive(newTopicKey);
+        return _topics.getActiveTopic().get().getOutcome();
+    }
+
+    public Set<Topic> getTopics() {
+        return _topics.getTopics();
+    }
+
+    public boolean isActive(Topic topic) {
+        Optional<Topic> activeTopic = _topics.getActiveTopic();
+        if (activeTopic.isPresent()) {
+            return activeTopic.get().equals(topic);
+        }
+        return false;
     }
 }

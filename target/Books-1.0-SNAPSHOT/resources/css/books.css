@@ -34,6 +34,11 @@ h3 {
     font-size: 1.2em;
 }
 
+body > div#adminWrapper {
+    background-color: rosybrown;
+    border-radius: 1em;
+}
+
 body > div {
     width: 80em;
     margin: 0 auto;
@@ -120,3 +125,48 @@ nav{
     color: red;
 }
 
+main div.tab {
+    display: block;
+}
+
+main ul.tab {
+    list-style-type: none;
+    display: inline;
+}
+
+main li.tab, main li.activetab {
+    list-style-type: none;
+    display: inline;
+    border-style: solid;
+    border-width: 2px 2px 1px 2px;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    background-color: #ccccd8;
+}
+
+main li.tab {
+    border-color: #cccccc #aaaaaa #aaaaaa #cccccc;
+}
+
+main li.activetab {
+    border-color: #cccccc #aaaaaa #ccccd8 #cccccc;
+}
+
+main li.tab a,
+main li.activetab a {
+    padding: 0 0.5em 0 0.5em;
+    font-size: 1.2em;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+main li.activetab a {
+    color: #000044;
+}
+
+.editor {
+    background-color: #ccccd8;
+    border-radius: 0.5em;
+    border-top-left-radius: 0;
+    padding: 1em;
+}

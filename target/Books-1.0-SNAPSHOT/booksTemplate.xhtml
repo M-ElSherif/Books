@@ -22,14 +22,10 @@ and open the template in the editor.
                     goes</ui:insert>
             </main>
             <nav>
-                This is the navigation
+                <ui:include src="/common/commonNavigation.xhtml" />
             </nav>
             <footer>
-                <h:outputLink value="">
-                    m
-                </h:outputLink>
-                |
-                <h:link value="About" outcome="index.xhtml"/>
+                <ui:include src="/common/footer.xhtml" />
             </footer>
         </div>
     </h:body>
