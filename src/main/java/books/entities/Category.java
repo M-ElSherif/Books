@@ -6,12 +6,19 @@
 package books.entities;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -27,6 +34,10 @@ public class Category implements Serializable {
     private int _id = -1;
     @Column(name = "catName")
     private String _name;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "ctCategoryId", referencedColumnName = "catId")
+    @MapKey(name = "_language")
+    private Map<String, CategoryTranslation> _catTranslations = new HashMap<>();
 
     public int getId() {
         return _id;
@@ -42,6 +53,44 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this._name = name;
+    }
+
+    public Map<String, CategoryTranslation> getCategoryTranslations() {
+        return _catTranslations;
+    }
+
+    public void setCategoryTranslations(Map<String, CategoryTranslation> catTranslations) {
+        this._catTranslations = catTranslations;
+    }
+
+    public String getTranslatedName(String langCode) {
+        if (_catTranslations.containsKey(langCode)) {
+            return _catTranslations.get(langCode).getName();
+        }
+        return "";
+    }
+
+    public void setTranslatedName(String langCode, String name) {
+        if (_catTranslations.containsKey(langCode)) {
+            _catTranslations.get(langCode).setName(name);
+        } else {
+            CategoryTranslation translation = new CategoryTranslation();
+            translation.setLanguage(langCode);
+            translation.setCategoryId(_id);
+            translation.setName(name);
+            _catTranslations.put(langCode, translation);
+        }
+    }
+
+    public String getTranslatedNameOrDefault(String langCode) {
+        if (_catTranslations.containsKey(langCode)) {
+            String name = _catTranslations.get(langCode).getName();
+            if (name.isEmpty()) {
+                return _name;
+            }
+            return name;
+        }
+        return _name;
     }
 
     @Override

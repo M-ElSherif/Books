@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -109,7 +110,19 @@ public class CategoryEditor implements Serializable {
             return "";
         }
         _topics.setActive(newTopicKey);
+        if (!newTopicKey.equals(CATEGORY)) {
+            initTranslation(newTopicKey);
+        }
         return _topics.getActiveTopic().get().getOutcome();
+    }
+
+    private void initTranslation(String langCode) {
+        // ensure there is an element in the map for this language
+        _categories.stream().forEach(c -> {
+            if (c.getTranslatedName(langCode).isEmpty()) {
+                c.setTranslatedName(langCode, "");
+            }
+        });
     }
 
     public Set<Topic> getTopics() {

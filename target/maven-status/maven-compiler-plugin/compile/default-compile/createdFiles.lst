@@ -5,8 +5,10 @@ books\JAXRSConfiguration.class
 books\Topic.class
 books\CategoryEditor.class
 books\entities\Category.class
+books\entities\CategoryTranslation.class
 books\ejb\CategoryService.class
 books\Topics.class
 books\Topic$TopicBuilder.class
+books\entities\CategoryTranslation_.class
 books\Topic$1.class
 books\Utilities$HandleDefault.class
